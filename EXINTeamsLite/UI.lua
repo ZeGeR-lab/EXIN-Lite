@@ -22,7 +22,7 @@ local function button(parent,text,x,y,w,fn)
   b:SetBackdropBorderColor(0.42,0.34,0.20,0.9)
   b.text=b:CreateFontString(nil,"OVERLAY","GameFontHighlightSmall")
   b.text:SetPoint("CENTER",0,0); b.text:SetWidth(w-10); b.text:SetWordWrap(false)
-  b:SetText=function(self,value) self.text:SetText(value or "") end
+  b.SetText=function(self,value) self.text:SetText(value or "") end
   b:SetText(text)
   b:SetScript("OnEnter",function(self) if self:IsEnabled() then self:SetBackdropColor(0.13,0.16,0.19,1); self:SetBackdropBorderColor(0.82,0.65,0.30,1); self.text:SetTextColor(1,0.88,0.55) end end)
   b:SetScript("OnLeave",function(self) self:SetBackdropColor(0.075,0.095,0.12,0.96); self:SetBackdropBorderColor(0.42,0.34,0.20,0.9); self.text:SetTextColor(0.95,0.91,0.82) end)
