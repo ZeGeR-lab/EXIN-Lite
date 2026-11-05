@@ -6,14 +6,12 @@ on:
     paths:
       - 'EXINTeamsLite/**'
       - 'README.md'
-      - 'EXINTeamsLite/README.md'
-      - 'README.md'
-      - 'EXINTeamsLite/README.md'
       - '.github/workflows/lua-check.yml'
   pull_request:
     branches: [main]
     paths:
       - 'EXINTeamsLite/**'
+      - 'README.md'
       - '.github/workflows/lua-check.yml'
 
 jobs:
