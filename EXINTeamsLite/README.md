@@ -39,7 +39,7 @@ Lightweight guild team and roster management for Ex Inferno.
 ## Permissions
 
 - The Guild Master has guild-wide administrative access.
-- **Snoop Wharg** has permanent Guild Master-equivalent access in the addon.
+- **Snoop Worg** has permanent Guild Master-equivalent access in the addon.
 - Guild-wide Officers can create and delete teams, transfer ownership, and manage any team's roster.
 - Designated Officers can be granted addon permissions without changing their in-game guild rank.
 - Team Leaders can manage their own team's metadata and roster, but cannot delete teams or change guild-wide Officer permissions.
