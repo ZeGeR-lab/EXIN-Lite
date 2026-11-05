@@ -1,6 +1,6 @@
 # EXIN Teams Lite
 
-**Current version: 0.5.42**
+**Current version: 0.5.43**
 
 Lightweight guild team and roster management for Ex Inferno.
 
