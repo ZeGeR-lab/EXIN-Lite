@@ -6,7 +6,7 @@ Lightweight guild team and roster management for Ex Inferno.
 
 ## Installation
 
-1. Download the `EXINTeamsLite-install` artifact from the successful [GitHub Actions build](https://github.com/ZeGeR-lab/EXIN-Teams/actions).
+1. Download the `EXINTeamsLite-install` artifact from the successful [GitHub Actions build](https://github.com/ZeGeR-lab/EXIN-Lite/actions).
 2. Extract the `EXINTeamsLite` folder from the archive.
 3. Place that folder in your World of Warcraft `_forever_/Interface/AddOns/` directory. WoW Forever uses its own client folder; do not install this build under `_retail_`, `_classic_`, or `_classic_era_`.
 4. Enable **EXIN Teams Lite** from the AddOns list.
