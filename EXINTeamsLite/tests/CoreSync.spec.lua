@@ -2,7 +2,7 @@ local captured
 local currentGuild="Ex Inferno"
 local currentRealm="AeriePeak"
 local roster={
-  {"Snoop Wharg-AeriePeak","Member",4,80,"Warrior",nil,"",nil,true},
+  {"Snoop Worg-AeriePeak","Member",4,80,"Warrior",nil,"",nil,true},
   {"Guildmaster-AeriePeak","Guild Master",0,80,"Paladin",nil,"",nil,true},
   {"Officer-AeriePeak","Member",4,80,"Mage",nil,"",nil,true},
   {"Member-AeriePeak","Member",4,80,"Priest",nil,"",nil,true},
@@ -18,8 +18,8 @@ function CreateFrame()
 end
 function GetGuildInfo() return currentGuild,"Member",4 end
 function GetRealmName() return currentRealm end
-function UnitFullName() return "Snoop Wharg","AeriePeak" end
-function UnitName() return "Snoop Wharg" end
+function UnitFullName() return "Snoop Worg","AeriePeak" end
+function UnitName() return "Snoop Worg" end
 function GetNumGuildMembers() return #roster end
 function GetGuildRosterInfo(i) return unpack(roster[i]) end
 function wipe(t) for k in pairs(t) do t[k]=nil end end
@@ -30,7 +30,7 @@ C_ChatInfo={RegisterAddonMessagePrefix=function() end,SendAddonMessage=function(
 local LT={}
 assert(loadfile("EXINTeamsLite/Core.lua"))("EXINTeamsLite",LT)
 LT:OpenGuild()
-assert(LT:IsGuildLeader("Snoop Wharg-AeriePeak"),"permanent admin override should resolve unique realm-qualified name")
+assert(LT:IsGuildLeader("Snoop Worg-AeriePeak"),"permanent admin override should resolve unique realm-qualified name")
 LT.authorizedOfficers["member-aeriepeak"]={by="guildmaster-aeriepeak",at=200,revoked=true}
 local function receive(message,sender)
   captured(nil,"CHAT_MSG_ADDON",LT.PREFIX,"Ex Inferno@AeriePeak|"..message,"GUILD",sender)
