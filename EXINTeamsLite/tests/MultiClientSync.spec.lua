@@ -1,6 +1,6 @@
 -- Two-client synchronization integration test for EXIN Teams Lite.
 local roster = {
-  {"Snoop Wharg-AeriePeak","Guild Master",0,80,"Warrior",nil,"",nil,true},
+  {"Snoop Worg-AeriePeak","Guild Master",0,80,"Warrior",nil,"",nil,true},
   {"Member-AeriePeak","Member",4,80,"Priest",nil,"",nil,true},
   {"Officer-AeriePeak","Member",4,80,"Mage",nil,"",nil,true},
 }
@@ -79,7 +79,7 @@ local function newClient(name,saved)
   client.LT:OpenGuild()
   return client
 end
-local snoop=newClient("Snoop Wharg-AeriePeak")
+local snoop=newClient("Snoop Worg-AeriePeak")
 local member=newClient("Member-AeriePeak")
 table.insert(clients,snoop)
 table.insert(clients,member)
@@ -150,18 +150,18 @@ for _,client in ipairs(clients) do
   assert(client.LT.deleted["z-team"]~=nil,"losing duplicate team should receive a tombstone")
 end
 local staleDuplicate="Ex Inferno@AeriePeak|NEW|z-team|Collision Team|Raid||Member-AeriePeak|Blue|E01"
-member.eventHandler(nil,"CHAT_MSG_ADDON",member.LT.PREFIX,staleDuplicate,"GUILD","Snoop Wharg-AeriePeak")
+member.eventHandler(nil,"CHAT_MSG_ADDON",member.LT.PREFIX,staleDuplicate,"GUILD","Snoop Worg-AeriePeak")
 assert(member.LT.teams["z-team"]==nil,"a stale duplicate NEW packet must not resurrect the losing team")
 
 -- Concurrent ownership transfers with identical timestamps must converge by actor identity.
 -- Snoop's normalized identity sorts after Officer's, so Snoop's transfer wins on every client.
 snoop.LT:Act("TRANSFER","a-team","Member-AeriePeak","2300")
-officerClient.LT:Act("TRANSFER","a-team","Snoop Wharg-AeriePeak","2300")
+officerClient.LT:Act("TRANSFER","a-team","Snoop Worg-AeriePeak","2300")
 flush()
 for _,client in ipairs(clients) do
   assert(client.LT.teams["a-team"].owner=="member-aeriepeak","equal-time ownership transfers must converge on the same deterministic winner")
   assert(client.LT.teams["a-team"].ownerChangedAt==2300,"winning ownership revision should be preserved without arrival-order increments")
-  assert(client.LT.teams["a-team"].ownerChangedBy=="snoop-wharg-aeriepeak","winning transfer actor should be recorded consistently")
+  assert(client.LT.teams["a-team"].ownerChangedBy=="snoop-worg-aeriepeak","winning transfer actor should be recorded consistently")
 end
 
 -- Simultaneous deletion by two Officers must remain idempotent and final.
@@ -173,13 +173,13 @@ for _,client in ipairs(clients) do
   assert(client.LT.deleted["a-team"]~=nil,"concurrent deletion must leave a durable tombstone")
 end
 -- Delayed snapshots and roster updates must never recreate a tombstoned team.
-local staleTeamSync="Ex Inferno@AeriePeak|SYNC|a-team|Restored Team|Raid||Blue|E01|member-aeriepeak|2300|0||snoop-wharg-aeriepeak"
+local staleTeamSync="Ex Inferno@AeriePeak|SYNC|a-team|Restored Team|Raid||Blue|E01|member-aeriepeak|2300|0||snoop-worg-aeriepeak"
 local staleTeamRoster="Ex Inferno@AeriePeak|ROSTER|a-team|officer-aeriepeak|leader"
-member.eventHandler(nil,"CHAT_MSG_ADDON",member.LT.PREFIX,staleTeamSync,"GUILD","Snoop Wharg-AeriePeak")
+member.eventHandler(nil,"CHAT_MSG_ADDON",member.LT.PREFIX,staleTeamSync,"GUILD","Snoop Worg-AeriePeak")
 member.eventHandler(nil,"CHAT_MSG_ADDON",member.LT.PREFIX,staleTeamRoster,"GUILD","Officer-AeriePeak")
 assert(member.LT.teams["a-team"]==nil,"delayed SYNC and ROSTER packets must not recreate a deleted team")
 local staleTeamNew="Ex Inferno@AeriePeak|NEW|a-team|Restored Team|Raid||Member-AeriePeak|Blue|E01"
-member.eventHandler(nil,"CHAT_MSG_ADDON",member.LT.PREFIX,staleTeamNew,"GUILD","Snoop Wharg-AeriePeak")
+member.eventHandler(nil,"CHAT_MSG_ADDON",member.LT.PREFIX,staleTeamNew,"GUILD","Snoop Worg-AeriePeak")
 assert(member.LT.teams["a-team"]==nil,"delayed NEW must not recreate a deleted team")
 
 -- Ownership transfer while the former owner is offline must reconcile on reconnect.
@@ -195,7 +195,7 @@ flush()
 assert(member.LT.teams.crimson.owner=="officer-aeriepeak","offline former owner should receive the new owner on reconnect")
 assert(member.LT.teams.crimson.members["officer-aeriepeak"]=="leader","reconnect snapshot should restore new owner Leader role")
 local staleOwner="Ex Inferno@AeriePeak|SYNC|crimson|Old Owner Snapshot|Raid||Blue|E01|member-aeriepeak|2199|0|"
-member.eventHandler(nil,"CHAT_MSG_ADDON",member.LT.PREFIX,staleOwner,"GUILD","Snoop Wharg-AeriePeak")
+member.eventHandler(nil,"CHAT_MSG_ADDON",member.LT.PREFIX,staleOwner,"GUILD","Snoop Worg-AeriePeak")
 assert(member.LT.teams.crimson.owner=="officer-aeriepeak","stale owner snapshot must not roll back a completed transfer")
 assert(member.LT.teams.crimson.name=="Crimson Raiders","rejected stale owner snapshot must not overwrite metadata")
 
@@ -234,7 +234,7 @@ assert(member.LT.deleted.crimson~=nil,"reconnect should persist the deletion tom
 
 -- A stale NEW packet cannot resurrect the deleted team on either client.
 local stale="Ex Inferno@AeriePeak|NEW|crimson|Old Crimson|Raid||Member-AeriePeak|Blue|E01"
-member.eventHandler(nil,"CHAT_MSG_ADDON",member.LT.PREFIX,stale,"GUILD","Snoop Wharg-AeriePeak")
+member.eventHandler(nil,"CHAT_MSG_ADDON",member.LT.PREFIX,stale,"GUILD","Snoop Worg-AeriePeak")
 assert(member.LT.teams.crimson==nil,"stale NEW must not resurrect a tombstoned team")
 -- Modern clients can reject addon messages during encounter lockdown or throttling.
 -- Lite must retain these packets and deliver them when the API permits communication.
