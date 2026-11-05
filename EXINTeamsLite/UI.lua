@@ -33,9 +33,9 @@ local teamList=CreateFrame("ScrollFrame",nil,panel,"UIPanelScrollFrameTemplate")
 local teamContent=CreateFrame("Frame",nil,teamList); teamContent:SetSize(215,405); teamList:SetScrollChild(teamContent)
 local detail=CreateFrame("Frame",nil,panel); detail:SetPoint("TOPLEFT",270,-75); detail:SetSize(465,465)
 local memberScroll=CreateFrame("ScrollFrame",nil,detail,"UIPanelScrollFrameTemplate")
-memberScroll:SetPoint("TOPLEFT",detail,"TOPLEFT",0,-95); memberScroll:SetSize(440,315)
+memberScroll:SetPoint("TOPLEFT",detail,"TOPLEFT",0,-95); memberScroll:SetSize(440,270)
 local memberContent=CreateFrame("Frame",nil,memberScroll)
-memberContent:SetSize(420,315); memberScroll:SetScrollChild(memberContent)
+memberContent:SetSize(420,270); memberScroll:SetScrollChild(memberContent)
 local teamButtons,memberRows,settingsButtons={},{},{}
 local title=label(detail,"Select a team",0,0,430,"GameFontNormalLarge")
 local meta=label(detail,"",0,-28,430,"GameFontHighlightSmall")
@@ -316,7 +316,7 @@ function LT:Draw()
     local canManage=self:CanManage(team,self:SelfName())
     if not settingsButtons[team.id] then
       settingsButtons[team.id]={}
-      settingsButtons[team.id].rename=button(detail,"Rename",0,-450,75,function()
+      settingsButtons[team.id].rename=button(detail,"Rename",0,-410,75,function()
         local t=chosen(); if t and LT:CanManage(t,LT:SelfName()) then
           ask("New team name (2–24 characters). Guild notes using the old team name will need to be updated manually.",t.name,function(value)
             value=(value or ""):match("^%s*(.-)%s*$")
@@ -327,7 +327,7 @@ function LT:Draw()
           end)
         end
       end)
-      settingsButtons[team.id].focus=button(detail,"Set focus",82,-450,82,function()
+      settingsButtons[team.id].focus=button(detail,"Set focus",82,-410,82,function()
         local t=chosen(); if t and LT:CanManage(t,LT:SelfName()) then
           ask("Team focus / category",t.focus or "General",function(value)
             value=(value or ""):match("^%s*(.-)%s*$")
@@ -335,7 +335,7 @@ function LT:Draw()
           end)
         end
       end)
-      settingsButtons[team.id].motd=button(detail,"Set message",170,-450,95,function()
+      settingsButtons[team.id].motd=button(detail,"Set message",170,-410,95,function()
         local t=chosen(); if t and LT:CanManage(t,LT:SelfName()) then
           ask("Team message (max 150 characters; leave blank to clear)",t.motd or "",function(value)
             value=(value or ""):match("^%s*(.-)%s*$")
@@ -343,7 +343,7 @@ function LT:Draw()
           end)
         end
       end)
-      settingsButtons[team.id].transfer=button(detail,"Transfer owner",271,-450,112,function()
+      settingsButtons[team.id].transfer=button(detail,"Transfer owner",271,-410,112,function()
         local t=chosen(); if not t or not LT:IsGuildOfficer(LT:SelfName()) then return end
         ask("Transfer ownership to which guild character?", "",function(value)
           local who=(value or ""):lower():gsub("^%s*(.-)%s*$","%1"):gsub("%s+","-")
@@ -362,7 +362,7 @@ function LT:Draw()
     for _,control in pairs(settingsButtons[team.id]) do control:SetShown(canManage) end
     settingsButtons[team.id].transfer:SetShown(self:IsGuildOfficer(self:SelfName()))
     local teamMembers=sortedMembers(team)
-    memberContent:SetHeight(math.max(315,#teamMembers*27))
+    memberContent:SetHeight(math.max(270,#teamMembers*27))
     for i,who in ipairs(teamMembers) do
       if not memberRows[i] then
         local row=CreateFrame("Frame",nil,memberContent); row:SetSize(420,25)
@@ -387,9 +387,9 @@ function LT:Draw()
       row.remove:SetEnabled(canManage and who~=team.owner and not (team.noteMembers and team.noteMembers[who]))
       row:Show()
     end
-    if not team.addButton then team.addButton=button(detail,"Add guild member",0,-420,125,addMember) end
+    if not team.addButton then team.addButton=button(detail,"Add guild member",0,-380,125,addMember) end
     team.addButton:SetShown(canManage)
-    if not team.deleteButton then team.deleteButton=button(detail,"Delete team",135,-420,100,function()
+    if not team.deleteButton then team.deleteButton=button(detail,"Delete team",135,-380,100,function()
       local t=chosen(); if t and LT:CanDelete(t,LT:SelfName()) then
         StaticPopupDialogs.EXIN_LITE_DELETE={text="Delete "..t.name.." for all addon users?",button1=DELETE or "Delete",button2=CANCEL,timeout=0,whileDead=true,hideOnEscape=true,OnAccept=function() LT:Act("DEL",t.id) end}
         StaticPopup_Show("EXIN_LITE_DELETE")
